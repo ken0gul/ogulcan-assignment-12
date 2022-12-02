@@ -125,8 +125,8 @@ INSERT INTO orders (date_time, order_customer_id)
 VALUES ('2014-10-9 09:47:00',1);
 
 INSERT INTO pizza_order(order_id,pizza_id)
-VALUES (1,3),
-	   (1,4);
+VALUES (3,3),
+	   (3,4);
 
 
 INSERT INTO customer_pizza(customer_id,pizza_id)
@@ -141,16 +141,51 @@ SELECT * FROM customers;
 SELECT * FROM pizzas;
 
 
--- HOW MUCH MONEY THEY SPEND
-SELECT c.customer_name AS 'Customer Name', o.date_time AS 'Date' ,SUM(p.pizza_price) AS 'TOTAL AMOUNT SPENT' FROM pizza_order po
+-- How much they spent - Q4
+
+SELECT c.customer_name AS 'CUSTOMER NAME', SUM(p.pizza_price) FROM pizza_order po
+JOIN customers c ON c.customer_id=po.order_id
+JOIN pizzas p ON p.pizza_id=po.pizza_id
+GROUP BY customer_id; 
+
+
+-- HOW MUCH MONEY THEY SPEND WITH DATE Q5
+SELECT  DATE(o.date_time) ,SUM(p.pizza_price) AS 'TOTAL AMOUNT SPENT' FROM pizza_order po
 
 JOIN pizzas p ON p.pizza_id=po.pizza_id
 JOIN customer_pizza cp ON cp.pizza_id=po.order_id
 JOIN customers c ON c.customer_id=po.order_id
-JOIN orders o ON o.order_id = po.order_id
-GROUP BY c.customer_id;
+LEFT JOIN orders o ON o.order_id = po.order_id
+GROUP BY po.order_id;
 
 
+SELECT DATE_FORMAT(o.date_time,'%M %e, %Y')  `Date`, c.customer_name 'Customer Name' , SUM(p.pizza_price) from orders o
+ JOIN customers c ON c.customer_id=o.order_customer_id
+ JOIN pizza_order po ON po.order_id = o.order_id
+ JOIN pizzas p ON p.pizza_id= po.pizza_id
+group by o.order_id;
+;
+    
+
+-- TEST
+SELECT * FROM customer_pizza;       
+SELECT * FROM pizza_order;      
+SELECT * FROM orders;
+SELECT * FROM customers;
+SELECT * FROM pizzas;
+
+
+-- SELECT c.customer_name AS 'Name', o.date_time AS 'DATE' ,SUM(p.pizza_price) AS 'TOTAL' FROM pizza_order po
+-- JOIN customers c ON c.customer_id = po.order_id
+-- JOIN pizzas p ON p.pizza_id=po.pizza_id
+-- JOIN orders o ON o.order_id=po.order_id
+-- GROUP BY c.customer_id;
+
+
+
+-- JOIN customer_pizza cp ON cp.customer_id=c.customer_id
+-- JOIN pizzas p ON p.pizza_id=po.pizza_id
+-- GROUP BY c.customer_id;
 
                   
 
