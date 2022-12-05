@@ -161,10 +161,16 @@ GROUP BY po.order_id;
 
 SELECT DATE_FORMAT(o.date_time,'%M %e, %Y')  `Date`, c.customer_name 'Customer Name' , SUM(p.pizza_price) from orders o
  JOIN customers c ON c.customer_id=o.order_customer_id
- JOIN pizza_order po ON po.order_id = o.order_id
- JOIN pizzas p ON p.pizza_id= po.pizza_id
-group by o.order_id;
-;
+ JOIN customer_pizza cp ON cp.customer_id = o.order_id
+ JOIN pizzas p ON p.pizza_id=cp.pizza_id
+ GROUP BY o.order_id;
+ 
+ 
+ 
+--  JOIN pizza_order po ON po.order_id = o.order_id
+--  JOIN pizzas p ON p.pizza_id= po.pizza_id
+-- group by o.order_id; 
+-- ;
     
 
 -- TEST
